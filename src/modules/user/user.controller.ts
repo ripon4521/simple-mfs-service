@@ -24,9 +24,9 @@ const createUser = catchAsync(
 
 
     const getUser = catchAsync(async (req, res,) => {
-        console.log(req.user?.accountType)
+    
           // Call the service to get the user data
-          const result = await userServies.getUser(req.user?.accountType); 
+          const result = await userServies.getUser(); 
           console.log(result)// Pass accountType if necessary
       
           // Send the response

@@ -8,7 +8,7 @@ export interface IUser {
     pin: string;               
     nid: string;                
     balance: number;           // Default: 40 for User, 100000 for Agent
-    accountType: "User" | "Agent" | "Admin";  
+    accountType: "user" | "agent" | "admin";  
     isBlocked?: boolean;        
           // Auto-generated
   }
