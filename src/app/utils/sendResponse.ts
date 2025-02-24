@@ -1,7 +1,7 @@
 import { Response } from "express";
 
 
-const sendRespone   =<T> (
+const sendResponse   =<T> (
     res: Response,
   data : {
     success: boolean,
@@ -20,4 +20,4 @@ const sendRespone   =<T> (
 
 }
 
-export default sendRespone;
+export default sendResponse;

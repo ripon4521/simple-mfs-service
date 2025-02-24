@@ -7,6 +7,7 @@ import { transactionValidation } from "./transction.validation";
 const transctionRouter = Router();
 
 transctionRouter.post('/create-transaction', validateRequest(transactionValidation.transactionSchema), transctionController.createTransctions);
-transctionRouter.delete('/:id', transctionController.deleteTransction)
+transctionRouter.delete('/:id', transctionController.deleteTransction);
+transctionRouter.get('/', transctionController.getTransctions)
 
 export default transctionRouter;

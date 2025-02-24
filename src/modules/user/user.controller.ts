@@ -1,7 +1,7 @@
 import catchAsync from "../../app/utils/catchAsync"
-import sendRespone from "../../app/utils/sendResponse"
 import httpStatus from 'http-status';
 import { userServies } from "./user.service";
+import sendResponse from "../../app/utils/sendResponse";
 
 
 
@@ -11,7 +11,7 @@ const createUser = catchAsync(
   
       const result = await userServies.createUser(payload)
   
-      sendRespone(res, {
+      sendResponse(res, {
         success: true,
         message: "User created successfully",
         data: result,
@@ -26,7 +26,7 @@ const createUser = catchAsync(
         const { id } = req.params;
         
         const result = await userServies.updateUser(id, payload);
-        sendRespone(res, {
+        sendResponse(res, {
           success: true,
           message: "User updated successfully",
           data: result,
@@ -48,7 +48,7 @@ const createUser = catchAsync(
           const result = await userServies.getUser(); 
       
           // Send the response
-          sendRespone(res, {
+          sendResponse(res, {
             success: true,
             message: 'User GET successfully',
             data: result,
@@ -65,7 +65,7 @@ const createUser = catchAsync(
         // console.log(data);
     
         const result = await userServies.getPofile(data?.mobile); // Assuming userServices.getProfile is defined
-        sendRespone(res, {
+        sendResponse(res, {
             success: true,
             message: 'User fetched successfully',
             data: result,
@@ -77,7 +77,7 @@ const createUser = catchAsync(
     const deleteUser = catchAsync(async (req, res) => {
         const { id } = req.params;
         const result = await userServies.deleteUser(id);
-        sendRespone(res, {
+        sendResponse(res, {
           success: true,
           message: "User deleted successfully",
           data: result,
