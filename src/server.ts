@@ -9,7 +9,7 @@ async function main(): Promise<void> {
     console.log('Database connected');
 
     app.listen(config.port, () => {
-      console.log(`Example app listening on port ${config.port}`);
+      console.log(`MFS Service App is live at ${config.port} . Alhamdulillah`);
     });
   } catch (err) {
     console.log(err);
