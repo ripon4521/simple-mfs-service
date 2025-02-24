@@ -26,8 +26,16 @@ const createUser = async (payload: IUser): Promise<IUser> => {
     return result;
   };
 
+
+  const updateUser = async( _id:string, payload:IUser) =>{
+    if(!_id) throw new Error('User ID is required to update user.');
+    const result = await UserModel.findOneAndUpdate({_id}, payload, {new: true});
+    return result;
+  }
+
   export const userServies = {
     createUser,
     getPofile,
     getUser,
+    updateUser,
   }

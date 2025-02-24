@@ -11,5 +11,6 @@ const userRoute  = Router();
 userRoute.post('/create-user', validateRequest(userValidation.userCreateValidationSchema), userController.createUser);
 userRoute.get('/profile', auth(), userController.getProfile);
 userRoute.get('/',  userController.getUser);
+userRoute.patch('/:id', validateRequest(userValidation.userUpdateValidationSchema), userController.updateUser);
 
 export default userRoute;

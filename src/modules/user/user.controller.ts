@@ -21,13 +21,31 @@ const createUser = catchAsync(
       )
     })
 
+    const updateUser = catchAsync(async (req, res) => {
+        const payload = req.body;
+        const { id } = req.params;
+        
+        const result = await userServies.updateUser(id, payload);
+        sendRespone(res, {
+          success: true,
+          message: "User updated successfully",
+          data: result,
+          statusCode: httpStatus.OK,
+        }
+    
+        )
+
+
+      
+      
+      })
+
 
 
     const getUser = catchAsync(async (req, res,) => {
     
           // Call the service to get the user data
           const result = await userServies.getUser(); 
-          console.log(result)// Pass accountType if necessary
       
           // Send the response
           sendRespone(res, {
@@ -60,4 +78,5 @@ export  const userController = {
         createUser,
         getUser,
         getProfile,
+        updateUser,
     }
