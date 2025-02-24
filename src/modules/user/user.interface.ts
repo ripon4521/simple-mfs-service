@@ -1,3 +1,5 @@
+import {  USER_TYPE } from "./user.constant";
+
 export interface IUser {
     _id?: string;             
     name: string;               
@@ -6,8 +8,10 @@ export interface IUser {
     pin: string;               
     nid: string;                
     balance: number;           // Default: 40 for User, 100000 for Agent
-    accountType: "User" | "Agent";  
+    accountType: "User" | "Agent" | "Admin";  
     isBlocked?: boolean;        
           // Auto-generated
   }
   
+
+  export type TUserRole = keyof typeof USER_TYPE;

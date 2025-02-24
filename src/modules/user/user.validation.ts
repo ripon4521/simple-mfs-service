@@ -29,7 +29,7 @@ import { z } from "zod";
     .max(17, "NID can't exceed 17 digits")
     .regex(/^\d+$/, "NID must contain only numbers"),
 
-  accountType: z.enum(["User", "Agent"], {
+  accountType: z.enum(["user", "agent", "admin"], {
     required_error: "Account type is required",
   }),
 

@@ -22,6 +22,42 @@ const createUser = catchAsync(
     })
 
 
-  export  const userController = {
+
+    const getUser = catchAsync(async (req, res,) => {
+        console.log(req.user?.accountType)
+          // Call the service to get the user data
+          const result = await userServies.getUser(req.user?.accountType); 
+          console.log(result)// Pass accountType if necessary
+      
+          // Send the response
+          sendRespone(res, {
+            success: true,
+            message: 'User GET successfully',
+            data: result,
+            statusCode: httpStatus.OK, // Use OK (200) for successful GET requests
+          });
+        
+      });
+
+
+
+
+      const getProfile = catchAsync(async (req, res) => {
+        const data = req.user;
+        // console.log(data);
+    
+        const result = await userServies.getPofile(data?.mobile); // Assuming userServices.getProfile is defined
+        sendRespone(res, {
+            success: true,
+            message: 'User fetched successfully',
+            data: result,
+            statusCode: httpStatus.OK,
+        });
+    });
+
+
+export  const userController = {
         createUser,
+        getUser,
+        getProfile,
     }

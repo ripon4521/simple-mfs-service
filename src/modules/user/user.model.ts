@@ -57,7 +57,7 @@ const userSchema = new Schema<IUser>(
     },
     accountType: {
       type: String,
-      enum: ["User", "Agent"],
+      enum: ["user", "agent", "admin"],
       required: true,
     },
     isBlocked: {
