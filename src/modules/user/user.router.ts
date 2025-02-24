@@ -12,5 +12,6 @@ userRoute.post('/create-user', validateRequest(userValidation.userCreateValidati
 userRoute.get('/profile', auth(), userController.getProfile);
 userRoute.get('/',  userController.getUser);
 userRoute.patch('/:id', validateRequest(userValidation.userUpdateValidationSchema), userController.updateUser);
+userRoute.delete('/:id', userController.deleteUser);
 
 export default userRoute;

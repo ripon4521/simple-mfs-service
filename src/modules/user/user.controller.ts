@@ -74,9 +74,23 @@ const createUser = catchAsync(
     });
 
 
-export  const userController = {
+    const deleteUser = catchAsync(async (req, res) => {
+        const { id } = req.params;
+        const result = await userServies.deleteUser(id);
+        sendRespone(res, {
+          success: true,
+          message: "User deleted successfully",
+          data: result,
+          statusCode: httpStatus.OK,
+        })
+    
+    })
+
+
+export const userController = {
         createUser,
         getUser,
         getProfile,
         updateUser,
-    }
+        deleteUser,
+}

@@ -33,9 +33,18 @@ const createUser = async (payload: IUser): Promise<IUser> => {
     return result;
   }
 
+  const deleteUser = async (_id:string) =>{
+    if(!_id) throw new Error('User ID is required to delete user.');
+    const result = await UserModel.findOneAndDelete({_id});
+    return result;
+  }
+
+
+
   export const userServies = {
     createUser,
     getPofile,
     getUser,
     updateUser,
+    deleteUser
   }

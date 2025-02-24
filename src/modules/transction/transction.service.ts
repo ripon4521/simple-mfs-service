@@ -84,7 +84,6 @@ const createTransction = async (payload: Transaction) => {
 
 
 
-
 const deleteTransaction = async (_id : string) => {
     const transaction = await transactionModel.findOneAndDelete({_id});
     return transaction;

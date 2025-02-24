@@ -2,6 +2,7 @@ import { Router } from "express";
 import userRoute from "../../modules/user/user.router";
 import authRouter from "../../modules/auth/auth.router";
 import transctionRouter from "../../modules/transction/transction.router";
+import systemBalanceRouter from "../../modules/systemBalance/systemBalance.router";
 
 const router = Router();
 const moduleRoutes = [
@@ -16,6 +17,9 @@ const moduleRoutes = [
     },{
       path:'/transction',
       route: transctionRouter
+    },{
+      path:'/systemBalance',
+      route: systemBalanceRouter
     }
 ];
 moduleRoutes.forEach((route) => {

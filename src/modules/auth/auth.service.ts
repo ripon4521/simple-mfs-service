@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+import SystemBalance from "../systemBalance/systemBalance.model";
 import { IUser } from "../user/user.interface";
 import UserModel from "../user/user.model";
 import bcrypt from 'bcrypt';
@@ -6,10 +8,51 @@ import jwt from 'jsonwebtoken';
 
 
 const register = async (payload: IUser) => {
-    const result = await UserModel.create(payload);
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    // 1. Create the new user
+    const result = await UserModel.create([payload], { session });
     if (!result) throw { message: 'Failed to create user', statusCode: 500 };
-    return result;
-  };
+
+   
+    let systemBalance = await SystemBalance.findOne({}, null, { session });
+    // console.log("System Balance before update:", systemBalance);
+
+
+    if (!systemBalance) {
+      systemBalance = await SystemBalance.create({ totalBalance: 0 }, { session });
+      console.log("System Balance was created with initial balance:", systemBalance);
+    }
+
+
+    let amountToAdd = 0;
+    if (payload.accountType === 'user') {
+      amountToAdd = 40; 
+    } else if (payload.accountType === 'agent') {
+      amountToAdd = 100000; 
+    }
+
+
+    const updatedBalance = systemBalance.totalBalance + amountToAdd;
+    
+
+ 
+    await SystemBalance.updateOne({}, { totalBalance: updatedBalance }, { session });
+
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return result; 
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    // console.error("Error during transaction:", error);
+    throw new Error('Failed to create user and update system balance');
+  }
+};
 
 
 const login = async (payload: { mobile: string; pin: string }) => {
