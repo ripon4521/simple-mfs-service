@@ -25,4 +25,6 @@ const databaseUrl = `mongodb+srv://${process.env.DATABASE_USER}:${process.env.DA
 export default {
   port,
   database_url: databaseUrl,
+  bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
+  
 };

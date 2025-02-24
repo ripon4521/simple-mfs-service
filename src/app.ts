@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use('/api/v1', router);
 const getAcontroller = (req :Request, res:Response) =>{
-  res.send('Welcome to the practice project with mvc pattern with express js , node js , mongodb and mongoose!')
+  res.send('Welcome to the simple MFS - mobile financial service web server!')
 }
 app.get('/', getAcontroller);
 app.use(notFound);
