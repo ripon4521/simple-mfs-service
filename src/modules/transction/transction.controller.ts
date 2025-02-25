@@ -31,7 +31,7 @@ const deleteTransction = catchAsync(async (req, res) => {
 
 
 const getTransctions = catchAsync(async (req, res) => {
-    console.log(req.user)
+    
     const result = await transctionService.getTransactions();
   
     sendResponse(res, {

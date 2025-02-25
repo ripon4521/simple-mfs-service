@@ -3,6 +3,7 @@ import userRoute from "../../modules/user/user.router";
 import authRouter from "../../modules/auth/auth.router";
 import transctionRouter from "../../modules/transction/transction.router";
 import systemBalanceRouter from "../../modules/systemBalance/systemBalance.router";
+import sendMoneyRouter from "../../modules/sendMoney/sendMoney.router";
 
 const router = Router();
 const moduleRoutes = [
@@ -20,6 +21,9 @@ const moduleRoutes = [
     },{
       path:'/systemBalance',
       route: systemBalanceRouter
+    },{
+      path: '/sendmoney',
+      route: sendMoneyRouter
     }
 ];
 moduleRoutes.forEach((route) => {
