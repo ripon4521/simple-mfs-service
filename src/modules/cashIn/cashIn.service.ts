@@ -6,68 +6,57 @@ import SystemBalance from '../systemBalance/systemBalance.model';
 import transactionModel from '../transction/transction.model';
 
 const createCashIn = async (payload: ICashIn) => {
-    const { senderId, receiverNumber, amount, pin, fee } = payload;
+  const { senderId, receiverNumber, amount, pin, fee } = payload;
 
-    const transactionId = uuidv4();
+  const transactionId = uuidv4();
 
-    // Fetch user (sender) with PIN
-    const user = await UserModel.findById(senderId).select('+pin');
-    if (!user) throw new Error('Sender not found.')
-    if (!user.pin) {
-        throw new Error('No PIN set for this user.');
+  const user = await UserModel.findById(senderId).select('+pin');
+  if (!user) throw new Error('Sender not found.');
+  if (!user.pin) {
+    throw new Error('No PIN set for this user.');
+  }
+
+  const isPinMatched = await bcrypt.compare(pin, user.pin);
+  if (!isPinMatched) throw new Error('Invalid PIN.');
+
+  // Start transaction session
+  const session = await UserModel.startSession();
+  try {
+    session.startTransaction();
+
+    const agent = await UserModel.findOne({
+      mobile: receiverNumber,
+      accountType: 'user',
+    }).session(session);
+    if (!agent) {
+      throw new Error('User not found or unauthorized.');
     }
 
-    // Compare PIN
-    const isPinMatched = await bcrypt.compare(pin, user.pin);
-    if (!isPinMatched) throw new Error('Invalid PIN.');
+    agent.balance += amount;
+    await agent.save({ session });
 
-    // Start transaction session
-    const session = await UserModel.startSession();
-    try {
-        session.startTransaction();
-
-        // Find the agent by receiverNumber (Phone number or other identifier)
-        const agent = await UserModel.findOne({ mobile: receiverNumber, accountType: 'user' }).session(session);
-        if (!agent) {
-            throw new Error('User not found or unauthorized.');
-        }
-
-        // Update agent balance
-        agent.balance += amount;
-        await agent.save({ session });
-
-        // Update system balance
-        const systemBalance = await SystemBalance.findOne().session(session);
-        if (systemBalance) {
-            systemBalance.totalBalance += amount;
-            await systemBalance.save({ session });
-        }
-
-        // Record transaction
-        const transactionData = { ...payload, transactionId, fee };
-        await transactionModel.create([transactionData], { session });
-
-        // Update user balance
-        user.balance += amount;
-        await user.save({ session });
-
-        // Commit the transaction after all updates
-        await session.commitTransaction();
-        console.log(`Cash-in successful: ${amount} Taka deposited. Transaction ID: ${transactionId}`);
-
-        // Notify the user (mock notification for now)
-        console.log(`User notification: Cash-in transaction completed. Amount: ${amount} Taka. Transaction ID: ${transactionId}`);
-
-        return transactionData;
-
-    } catch (error) {
-        await session.abortTransaction();
-        console.error('Error during cash-in process:', error);
-        throw new Error('Cash-in failed: ' + error.message);
-
-    } finally {
-        session.endSession();
+    const systemBalance = await SystemBalance.findOne().session(session);
+    if (systemBalance) {
+      systemBalance.totalBalance += amount;
+      await systemBalance.save({ session });
     }
+
+    const transactionData = { ...payload, transactionId, fee };
+    await transactionModel.create([transactionData], { session });
+
+    user.balance += amount;
+    await user.save({ session });
+
+    await session.commitTransaction();
+
+    return transactionData;
+  } catch (error) {
+    await session.abortTransaction();
+
+    throw new Error('Cash-in failed: ' + error.message);
+  } finally {
+    session.endSession();
+  }
 };
 
 export default createCashIn;

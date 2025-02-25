@@ -3,7 +3,7 @@ import { IBalanceRequest } from './balanceRequest.inteface';
 
 const BalanceRequestSchema: Schema = new Schema(
   {
-    agentId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to User model
+    agentId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, 
     amount: { type: Number, required: true, min: 50 },
     status: {
       type: String,
@@ -13,7 +13,7 @@ const BalanceRequestSchema: Schema = new Schema(
     },
   },
   {
-    timestamps: true, // adds createdAt and updatedAt fields
+    timestamps: true, 
   }
 );
 
