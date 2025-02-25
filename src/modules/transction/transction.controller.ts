@@ -41,10 +41,24 @@ const getTransctions = catchAsync(async (req, res) => {
       statusCode: httpStatus.OK,
     });
   });
+
+  const getSingleTransctions = catchAsync(async (req, res) => {
+    const {mobile} = req.params;
+    const result = await transctionService.getSingleTransactions(mobile);
+  
+    sendResponse(res, {
+      success: true,
+      message: "Transactions fetched successfully",
+      data: result,
+      statusCode: httpStatus.OK,
+    });
+  });
+  
   
   
 export const transctionController = {
   createTransctions,
   deleteTransction,
   getTransctions,
+  getSingleTransctions,
 };

@@ -3,6 +3,7 @@ import UserModel from "../user/user.model";
 import { IWithdraw } from "./withdaw.interface";
 import withdrawModel from "./withdraw.model";
 import { NotificationModel } from "../agentNotification/agentNotification.model";
+import SystemBalance from "../systemBalance/systemBalance.model";
 
 
 const createWithdraw = async (payload: IWithdraw) => {
@@ -46,9 +47,11 @@ const getWithdrawById = async(_id:string)=>{
     const result = await withdrawModel.findOne({_id}).populate('agentId');
     return result;
 }
+
+
 const updateWithdraw = async (_id: string, payload: IWithdraw) => {
     const session = await mongoose.startSession();
-  
+    
     try {
       session.startTransaction();
       const updatedWithdrawRequest = await withdrawModel.findOneAndUpdate(
@@ -68,16 +71,25 @@ const updateWithdraw = async (_id: string, payload: IWithdraw) => {
           throw new Error('Agent not found');
         }
   
+        // Create notification
         const notificationData = {
           agentId: updatedWithdrawRequest.agentId,
           message: `Your withdrawal of ৳${updatedWithdrawRequest.amount} has been approved.`,
-          type: 'withdrawal', // Can be any type based on your notification structure
-          status: 'unread', // Assuming the default status for notifications is 'unread'
+          type: 'withdrawal', 
+          status: 'unread', 
         };
   
         const notification = await NotificationModel.create([notificationData], { session });
   
-        console.log('Notification created:', notification);
+  
+        // Update system balance
+        const systemBalance = await SystemBalance.findOne().session(session);
+        if (!systemBalance) {
+          throw new Error('System balance not found');
+        }
+  
+        systemBalance.totalBalance -= updatedWithdrawRequest.amount;
+        await systemBalance.save({ session });
       }
   
       if (updatedWithdrawRequest.status === 'rejected') {
@@ -86,6 +98,8 @@ const updateWithdraw = async (_id: string, payload: IWithdraw) => {
         if (!agent) {
           throw new Error('Agent not found');
         }
+  
+        // Revert agent balance if rejected
         agent.balance += updatedWithdrawRequest.amount;
         await agent.save({ session });
       }
@@ -100,7 +114,7 @@ const updateWithdraw = async (_id: string, payload: IWithdraw) => {
       session.endSession();
     }
   };
-
+  
   
 
 const deleteWithdraw = async(_id:string)=>{

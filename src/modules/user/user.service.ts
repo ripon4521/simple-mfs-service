@@ -9,13 +9,19 @@ const createUser = async (payload: IUser): Promise<IUser> => {
     return result
   };
 
-  const getUser = async () => {
+  const getUser = async (searchTerm = '') => {
+    let filter = {};
   
-   const   result = await UserModel.find(); // Fetch all users
+    if (searchTerm && searchTerm.trim() !== '') {
+      filter = {
+        mobile: { $regex: searchTerm, $options: "i" } // Case-insensitive search
+      };
+    }
   
+    const result = await UserModel.find(filter); // Fetch users with filter
     return result;
+  };
   
-  }
 
   const getSingleUser = async(_id:string) =>{
     const result = await UserModel.findOne({_id});

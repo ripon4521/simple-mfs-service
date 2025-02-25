@@ -8,6 +8,7 @@ const transctionRouter = Router();
 
 transctionRouter.post('/create-transaction', validateRequest(transactionValidation.transactionSchema), transctionController.createTransctions);
 transctionRouter.delete('/:id', transctionController.deleteTransction);
-transctionRouter.get('/', transctionController.getTransctions)
+transctionRouter.get('/', transctionController.getTransctions);
+
 
 export default transctionRouter;

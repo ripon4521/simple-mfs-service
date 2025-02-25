@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import UserModel from "../user/user.model";
 import { IBalanceRequest } from "./balanceRequest.inteface";
 import balanceRequestModel from "./balanceRequest.model";
+import SystemBalance from "../systemBalance/systemBalance.model";
 
 
 const createBalanceRequest = async(payload:IBalanceRequest)=>{
@@ -20,7 +21,6 @@ const getBalanceRequestById = async(_id:string)=>{
 }
 
 const updateBalanceRequest = async (_id: string, payload: IBalanceRequest) => {
-
     const session = await mongoose.startSession();
     
     try {
@@ -41,8 +41,18 @@ const updateBalanceRequest = async (_id: string, payload: IBalanceRequest) => {
         if (!agent) {
           throw new Error('Agent not found');
         }
+  
         agent.balance += updatedBalanceRequest.amount;
         await agent.save();
+  
+        // Update system balance
+        const systemBalance = await SystemBalance.findOne(); // assuming SystemBalanceModel exists
+        if (!systemBalance) {
+          throw new Error('System balance not found');
+        }
+  
+        systemBalance.totalBalance -= updatedBalanceRequest.amount; // deduct from system balance
+        await systemBalance.save();
       }
   
       await session.commitTransaction();
@@ -50,12 +60,12 @@ const updateBalanceRequest = async (_id: string, payload: IBalanceRequest) => {
   
     } catch (error) {
       await session.abortTransaction();
-      throw error; 
+      throw error;
     } finally {
-   
       session.endSession();
     }
   };
+  
 
 const deleteBalanceRequest = async(_id:string)=>{
   const deleteBalanceRequest=  await balanceRequestModel.findOneAndDelete({_id});

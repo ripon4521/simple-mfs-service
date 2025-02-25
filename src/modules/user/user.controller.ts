@@ -41,22 +41,20 @@ const createUser = catchAsync(
       })
 
 
+      const getUser = catchAsync(async (req, res) => {
 
-    const getUser = catchAsync(async (req, res,) => {
-    
-     
-          const result = await userServies.getUser(); 
+        const searchTerm = typeof req.query.searchTerm === 'string' ? req.query.searchTerm : '';
+        const result = await userServies.getUser(searchTerm || '');
       
-          // Send the response
-          sendResponse(res, {
-            success: true,
-            message: 'User GET successfully',
-            data: result,
-            statusCode: httpStatus.OK, 
-          });
-        
+        // Send the response
+        sendResponse(res, {
+          success: true,
+          message: 'User GET successfully',
+          data: result,
+          statusCode: httpStatus.OK, 
+        });
       });
-
+      
 
 
 
