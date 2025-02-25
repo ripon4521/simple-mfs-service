@@ -40,7 +40,6 @@ const userSchema = new Schema<IUser>(
       type: String,
       required: [true, "PIN is required"],
       minlength: 5,
-      maxlength: 5,
       select: false, // Exclude from query results
     },
     nid: {
@@ -80,20 +79,22 @@ userSchema.pre("save", async function (next) {
   const user = this;
 
   if (user.isModified("pin")) {
-    const saltRounds = Number(config.bcrypt_salt_rounds) || 10;
+    const saltRounds = Number(config.bcrypt_salt_rounds) ;
     user.pin = await bcrypt.hash(user.pin, saltRounds);
   }
   next();
 });
 
-// Post-save Hook to remove hashed PIN from response
-userSchema.post("save", function (doc, next) {
-  doc.pin = ""; // Clear PIN in response
-  next();
-});
+userSchema.methods.toJSON = function () {
+  const userObject = this.toObject();
+  delete userObject.pin; // Response থেকে hashed PIN সরানো
+  return userObject;
+};
 
-// Compare PIN Method
 userSchema.methods.comparePin = async function (candidatePin: string): Promise<boolean> {
+  if (!this.pin) {
+    throw new Error("PIN is not set for this user.");
+  }
   return bcrypt.compare(candidatePin, this.pin);
 };
 

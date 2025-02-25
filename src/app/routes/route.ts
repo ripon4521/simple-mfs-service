@@ -4,6 +4,7 @@ import authRouter from "../../modules/auth/auth.router";
 import transctionRouter from "../../modules/transction/transction.router";
 import systemBalanceRouter from "../../modules/systemBalance/systemBalance.router";
 import sendMoneyRouter from "../../modules/sendMoney/sendMoney.router";
+import cashOutRoute from "../../modules/cashOut/cashOut.router";
 
 const router = Router();
 const moduleRoutes = [
@@ -24,6 +25,9 @@ const moduleRoutes = [
     },{
       path: '/sendmoney',
       route: sendMoneyRouter
+    },{
+      path:'/cashout',
+      route: cashOutRoute
     }
 ];
 moduleRoutes.forEach((route) => {

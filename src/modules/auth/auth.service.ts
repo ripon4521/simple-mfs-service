@@ -80,7 +80,7 @@ const login = async (payload: { mobile: string; pin: string }) => {
   }
 
   // JWT Payload
-  const jwtPayload = { mobile: user.mobile, role: user.accountType, id: user._id.toString() };
+  const jwtPayload = { mobile: user.mobile, role: user.accountType, id: user._id.toString(), pin: user.pin };
 
   // Generate JWT token
   const token = jwt.sign(jwtPayload, process.env.JWT_SECRET || "primarytestkey", { expiresIn: '10d' });
