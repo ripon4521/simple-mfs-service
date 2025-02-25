@@ -64,6 +64,10 @@ const userSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
+    isApproved: {
+      type: Boolean,
+      default: false, // For Agents - needs Admin Approval
+    },
   },
   {
     timestamps: true,
