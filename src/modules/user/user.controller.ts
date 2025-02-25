@@ -44,7 +44,7 @@ const createUser = catchAsync(
 
     const getUser = catchAsync(async (req, res,) => {
     
-          // Call the service to get the user data
+     
           const result = await userServies.getUser(); 
       
           // Send the response
@@ -52,7 +52,7 @@ const createUser = catchAsync(
             success: true,
             message: 'User GET successfully',
             data: result,
-            statusCode: httpStatus.OK, // Use OK (200) for successful GET requests
+            statusCode: httpStatus.OK, 
           });
         
       });
@@ -87,10 +87,22 @@ const createUser = catchAsync(
     })
 
 
+    const getSingleUser = catchAsync(async (req, res) => {
+      const { id } = req.params;
+      const result = await userServies.getSingleUser(id);
+      sendResponse(res, {
+        success: true,
+        message: "User fetched successfully",
+        data: result,
+        statusCode: httpStatus.OK,
+      })
+    })
+
 export const userController = {
         createUser,
         getUser,
         getProfile,
         updateUser,
         deleteUser,
+        getSingleUser,
 }

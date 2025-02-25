@@ -15,7 +15,7 @@ const getBalanceRequest = async()=>{
 }
 
 const getBalanceRequestById = async(_id:string)=>{
-    const balanceRequests = await balanceRequestModel.findOne({_id});
+    const balanceRequests = await balanceRequestModel.findOne({_id}).populate('agentId');
     return balanceRequests;
 }
 

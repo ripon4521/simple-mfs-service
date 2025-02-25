@@ -17,10 +17,15 @@ const createUser = async (payload: IUser): Promise<IUser> => {
   
   }
 
+  const getSingleUser = async(_id:string) =>{
+    const result = await UserModel.findOne({_id});
+    return result;
+  }
+
   const getPofile = async (mobile: string) => {
     if (!mobile) throw new Error('mobile is required to fetch profile.');
   
-    const result = await UserModel.findOne({ mobile }); // Use findOne for a single user
+    const result = await UserModel.findOne({ mobile }); 
     if (!result) throw new Error('User not found.');
   
     return result;
@@ -46,5 +51,6 @@ const createUser = async (payload: IUser): Promise<IUser> => {
     getPofile,
     getUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getSingleUser
   }
