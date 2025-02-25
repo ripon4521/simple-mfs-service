@@ -6,6 +6,7 @@ import systemBalanceRouter from "../../modules/systemBalance/systemBalance.route
 import sendMoneyRouter from "../../modules/sendMoney/sendMoney.router";
 import cashOutRoute from "../../modules/cashOut/cashOut.router";
 import cashInRouter from "../../modules/cashIn/cashIn.router";
+import balanceRequestRouter from "../../modules/balanceRequest/balancerequest.router";
 
 const router = Router();
 const moduleRoutes = [
@@ -32,6 +33,9 @@ const moduleRoutes = [
     },{
       path:'/cashIn',
       route: cashInRouter
+    },{
+      path:'/balance',
+      route: balanceRequestRouter
     }
 ];
 moduleRoutes.forEach((route) => {
