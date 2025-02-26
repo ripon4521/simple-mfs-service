@@ -41,6 +41,8 @@ import { USER_TYPE } from "./user.constant";
 
   isBlocked: z.boolean().optional(), 
   isApproved: z.boolean().optional(),
+  isRejected: z.boolean().optional(),
+  
 })
 
 
@@ -59,6 +61,7 @@ const userUpdateValidationSchema = z.object({
     accountType: z.enum([USER_TYPE.user, USER_TYPE.agent, USER_TYPE.admin]).optional(),
     isBlocked: z.boolean().optional(),
     isApproved: z.boolean().optional(),
+    isRejected: z.boolean().optional(),
 })
 
 

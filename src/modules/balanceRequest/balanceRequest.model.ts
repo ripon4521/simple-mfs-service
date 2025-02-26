@@ -3,7 +3,7 @@ import { IBalanceRequest } from './balanceRequest.inteface';
 
 const BalanceRequestSchema: Schema = new Schema(
   {
-    agentId: { type: Schema.Types.ObjectId, ref: 'User', required: true }, 
+    agentId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     amount: { type: Number, required: true, min: 50 },
     status: {
       type: String,
@@ -11,15 +11,19 @@ const BalanceRequestSchema: Schema = new Schema(
       default: 'pending',
       required: true,
     },
+    isBalanceRequest: {
+      type: Boolean,
+      default: true, // For Agents - needs Admin Approval
+    },
   },
   {
-    timestamps: true, 
-  }
+    timestamps: true,
+  },
 );
 
 const balanceRequestModel = mongoose.model<IBalanceRequest>(
   'BalanceRequest',
-  BalanceRequestSchema
+  BalanceRequestSchema,
 );
 
 export default balanceRequestModel;

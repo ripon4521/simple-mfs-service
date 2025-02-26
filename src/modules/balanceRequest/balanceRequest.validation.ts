@@ -7,6 +7,7 @@ import { z } from 'zod';
   agentId: z.string().nonempty('Agent ID is required'),
   amount: z.number().positive('Amount must be positive'),
   status: z.enum(['pending', 'approved', 'rejected']),
+  isBalanceRequest: z.boolean().optional()
 })
 });
 
@@ -14,7 +15,8 @@ import { z } from 'zod';
     body:z.object({
 
    
-  status: z.enum(['pending', 'approved', 'rejected']),
+  status: z.enum(['pending', 'approved', 'rejected']).optional(),
+  isBalanceRequest:z.boolean().optional()
 })
 });
 
