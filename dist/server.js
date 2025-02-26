@@ -20,8 +20,7 @@ function main() {
         try {
             yield mongoose_1.default.connect(config_1.default.database_url);
             // console.log('Database connected');
-            const port = process.env.PORT || 3000;
-            app_1.default.listen(port, () => {
+            app_1.default.listen(config_1.default.port, () => {
                 // console.log(`MFS Service App is live at ${config.port} . Alhamdulillah`);
             });
         }

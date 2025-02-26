@@ -7,8 +7,8 @@ async function main(): Promise<void> {
     await mongoose.connect(config.database_url as string);
     
     // console.log('Database connected');
-    const port = process.env.PORT || 3000;
-    app.listen(port, () => {
+
+    app.listen(config.port, () => {
       // console.log(`MFS Service App is live at ${config.port} . Alhamdulillah`);
     });
   } catch (err) {
