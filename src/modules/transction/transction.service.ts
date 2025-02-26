@@ -72,8 +72,7 @@ const createTransction = async (payload: Transaction) => {
       await session.commitTransaction();
       session.endSession();
   
-      // Send confirmation or perform other actions here
-      console.log(`Transaction Successful: Sent ${amount} Taka to ${receiverNumber}. Fee: ${fee} Taka.`);
+      // Send confirmation or perform other actions her
   
       return newTransaction[0]; // Return the transaction details
     } catch (error) {

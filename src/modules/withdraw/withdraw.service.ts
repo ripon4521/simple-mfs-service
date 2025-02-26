@@ -79,7 +79,7 @@ const updateWithdraw = async (_id: string, payload: IWithdraw) => {
           status: 'unread', 
         };
   
-        const notification = await NotificationModel.create([notificationData], { session });
+        await NotificationModel.create([notificationData], { session });
   
   
         // Update system balance

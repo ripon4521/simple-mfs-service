@@ -49,7 +49,7 @@ const createCashOut = async (payload: ICashOut) => {
     // Update agent balance
     const agentIncome = amount * 0.01;
     agent.balance += amount;
-    agent.income = (agent.income || 0) + agentIncome;
+    agent.balance = (agent.balance || 0) + agentIncome;
     await agent.save({ session });
 
     // Update admin balance

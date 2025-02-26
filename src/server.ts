@@ -6,13 +6,13 @@ async function main(): Promise<void> {
   try {
     await mongoose.connect(config.database_url as string);
     
-    console.log('Database connected');
+    // console.log('Database connected');
 
     app.listen(config.port, () => {
-      console.log(`MFS Service App is live at ${config.port} . Alhamdulillah`);
+      // console.log(`MFS Service App is live at ${config.port} . Alhamdulillah`);
     });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
   }
 }
 

@@ -1,7 +1,7 @@
-import { JwtPayload } from "jsonwebtoken";
+
 import catchAsync from "../../app/utils/catchAsync";
 
-import UserModel from "../user/user.model";
+
 import { transctionService } from "./transction.service";
 import httpStatus from 'http-status';
 import sendResponse from "../../app/utils/sendResponse";
@@ -42,23 +42,11 @@ const getTransctions = catchAsync(async (req, res) => {
     });
   });
 
-  const getSingleTransctions = catchAsync(async (req, res) => {
-    const {mobile} = req.params;
-    const result = await transctionService.getSingleTransactions(mobile);
-  
-    sendResponse(res, {
-      success: true,
-      message: "Transactions fetched successfully",
-      data: result,
-      statusCode: httpStatus.OK,
-    });
-  });
-  
-  
+
   
 export const transctionController = {
   createTransctions,
   deleteTransction,
   getTransctions,
-  getSingleTransctions,
+
 };

@@ -14,18 +14,15 @@ const register = async (payload: IUser) => {
     const result = await UserModel.create([payload], { session });
     if (!result) throw { message: 'Failed to create user', statusCode: 500 };
 
-    let systemBalance = await SystemBalance.findOne({}, null, { session });
-    // console.log("System Balance before update:", systemBalance);
+    const systemBalance = await SystemBalance.findOne({}, null, { session });
 
     if (!systemBalance) {
-      systemBalance = await SystemBalance.create(
+      
+      await SystemBalance.create(
         { totalBalance: 0 },
         { session },
       );
-      console.log(
-        'System Balance was created with initial balance:',
-        systemBalance,
-      );
+     
     }
 
     let amountToAdd = 0;
